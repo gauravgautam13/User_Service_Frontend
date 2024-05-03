@@ -11,13 +11,11 @@ export default function Home() {
 
   return (
     <>
-    <div className="flex bg-gray-200">
+    <div className="flex bg-slate-50">
     <Header />
-    <div className="w-3/4">
     <LoginUserDetails/> 
     <Search />
     <AllUsers />
-    </div>
   </div>
     </>
 

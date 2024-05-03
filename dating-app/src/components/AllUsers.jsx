@@ -1,22 +1,31 @@
 import useAllUsers from '@/hooks/api/useAllUsers'
 import React, { useEffect, useState } from 'react'
+import { useQuery  } from '@tanstack/react-query'
+import apiCallerFunction from '@/service/ApiCallerFunction';
 
 const AllUsers = () => {
     
-    const {getAllUsers} = useAllUsers();
-    const [users, setUsers] = useState('');
 
-    useEffect(() => {
-        getAllUsers().then((res) => setUsers(res));
-    },[])
-    console.log(users)
+    const {data, isError, isLoading, error} = useQuery({queryKey:'getAll-Users', queryFn: () => apiCallerFunction("GET","user/users")});
+
+    if(isLoading){
+       return <h1>Loadingggg</h1>
+    }
+
+    if(isError){
+      console.log(error)
+      return <h1>SomeThing went wrong!!!</h1>
+    }
+
 
   return (
 
     <>
-    {users && users?.map(i => {
+    <div className='ml-auto  mr-16 mt-52 w-3/4'>
+    {data && data?.data?.map(i => {
         return (
-            <div className='grid grid-cols-3 gap-5 space-y-5 m-5 border border-black p-4' key={i.id}>
+          
+            <div className='grid grid-cols-3 bg-white space-y-5 border border-slate-500 mt-1 p-4' key={i.id}>
                 <h1>{i.name}</h1>
                 <h2>{i.email}</h2>
                 <h4>{i.role}</h4>
@@ -24,8 +33,10 @@ const AllUsers = () => {
                 <h6>{i.gender}</h6>
 
             </div>
+          
         )
     })}
+      </div>
     </>
   )
 }
